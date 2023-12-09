@@ -1,0 +1,17 @@
+﻿version: '3.8'
+
+services:
+  feedback.web:
+    container_name: mtogo-feedback-web
+    image: mtogo.feedback.web
+    build:
+      context: .
+      dockerfile: src/Feedback.Web/Dockerfile
+    ports:
+      - "8091:80"
+    networks:
+      - kafka
+
+networks:
+  kafka:
+    external: true
