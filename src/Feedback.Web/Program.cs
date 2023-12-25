@@ -33,6 +33,7 @@ builder.Services.AddDbContext<ReviewContext>(options =>
 
 //Build services
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
  
 
 

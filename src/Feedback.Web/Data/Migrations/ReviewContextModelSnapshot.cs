@@ -22,7 +22,7 @@ namespace Feedback.Web.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Feedback.Web.Entities.Review", b =>
+            modelBuilder.Entity("Feedback.Web.Entities.ReviewEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

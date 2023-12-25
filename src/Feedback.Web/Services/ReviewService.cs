@@ -8,22 +8,30 @@ namespace Feedback.Web.Services;
 
 public class ReviewService : IReviewService
 {
-    private readonly IReadRepository<Review> _reviewReadRepository;
-    private readonly IRepository<Review> _reviewRepository;
+    private readonly IReadRepository<ReviewEntity> _reviewReadRepository;
+    private readonly IRepository<ReviewEntity> _reviewRepository;
+    private readonly IOrderService _orderService;
     
-    public ReviewService(IReadRepository<Review> reviewReadRepository, IRepository<Review> reviewRepository)
+    public ReviewService(IReadRepository<ReviewEntity> reviewReadRepository, IRepository<ReviewEntity> reviewRepository, IOrderService orderService)
     {
         _reviewReadRepository = reviewReadRepository;
         _reviewRepository = reviewRepository;
+        _orderService = orderService;
     }
 
-   
+
+    public async Task<List<OrderViewModel>> GetOrders()
+    {
+        var orders = await _orderService.GetCompletedOrdersAsync(1);
+        return orders;
+
+    }
     
     public async Task<ReviewViewModel> CreateReviewAsync(ReviewDto dto)
     {
         try
         {
-            var createdReview = await _reviewRepository.AddAsync(new Review
+            var createdReview = await _reviewRepository.AddAsync(new ReviewEntity
             {
                 UserId = dto.UserId,
                 RestaurantId = dto.RestaurantId,

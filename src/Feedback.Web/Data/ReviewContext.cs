@@ -5,7 +5,7 @@ namespace Feedback.Web.Data;
 
 public class ReviewContext : DbContext
 {
-    public DbSet<Review> Reviews { get; set; }
+    public DbSet<ReviewEntity> Reviews { get; set; }
     
     
     
@@ -17,7 +17,7 @@ public class ReviewContext : DbContext
     {
         // Primary keys
         
-        modelBuilder.Entity<Review>().HasKey(x => x.Id);
+        modelBuilder.Entity<ReviewEntity>().HasKey(x => x.Id);
 
         
 

@@ -2,7 +2,7 @@
 
 namespace Feedback.Web.Entities;
 
-public class Review : BaseEntity
+public class ReviewEntity : BaseEntity
 {
     public long UserId { get; set; }
     public long RestaurantId { get; set; }

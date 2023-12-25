@@ -23,4 +23,11 @@ public class ReviewController : ControllerBase
         return Ok(review);
     }
     
+    [HttpGet("get-orders")]
+    public async Task<IActionResult> GetOrders()
+    {
+        var orders = await _reviewService.GetOrders();
+        return Ok(orders);
+    }
+    
 }
