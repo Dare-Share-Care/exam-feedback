@@ -23,11 +23,19 @@ public class ReviewController : ControllerBase
         return Ok();
     }
     
-    [HttpGet("get-orders")]
-    public async Task<IActionResult> GetOrders()
+    
+    [HttpGet("get-all-reviews")]
+    public async Task<IActionResult> GetAllReviews()
     {
-        var orders = await _reviewService.GetOrders();
-        return Ok(orders);
+        var reviews = await _reviewService.GetAllReviewsAsync();
+        return Ok(reviews);
+    }
+    
+    [HttpGet("get-review-by-id/{id}")]
+    public async Task<IActionResult> GetReviewById(long id)
+    {
+        var review = await _reviewService.GetReviewByIdAsync(id);
+        return Ok(review);
     }
     
 }

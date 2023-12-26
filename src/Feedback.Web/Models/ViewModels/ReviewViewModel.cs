@@ -2,11 +2,9 @@
 
 namespace Feedback.Web.Models.ViewModels;
 
-public class ReviewViewModel
+public class ReviewViewModel 
 {
     public long UserId { get; set; }
-    public long RestaurantId { get; set; }
-    public long CourierId { get; set; }
     public long OrderId { get; set; }
     public string ReviewText { get; set; }
 

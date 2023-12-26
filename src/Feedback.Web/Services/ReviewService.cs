@@ -2,7 +2,6 @@
 using Feedback.Web.Interfaces.DomainServices;
 using Feedback.Web.Models.Dto;
 using Feedback.Web.Models.ViewModels;
-using Feedback.Web.Specifications;
 using Restaurant.Infrastructure.Interfaces;
 
 namespace Feedback.Web.Services;
@@ -27,6 +26,8 @@ public class ReviewService : IReviewService
         var orders = await _orderService.GetCompletedOrdersAsync(1);
         return orders;
     }
+
+  
 
 
     public async Task SubmitReviewAsync(ReviewDto dto)
@@ -58,4 +59,35 @@ public class ReviewService : IReviewService
         await _reviewRepository.AddAsync(reviewToSubmit);
         await _reviewRepository.SaveChangesAsync();
     }
+    
+    public async Task <List<ReviewViewModel>> GetAllReviewsAsync()
+    {
+        var reviews = await _reviewReadRepository.ListAsync();
+        var viewModelsReview = reviews.Select(x => new ReviewViewModel()
+        {
+            UserId = x.UserId,
+            OrderId = x.OrderId,
+            ReviewText = x.ReviewText,
+            ReviewDate = x.ReviewDate,
+            Rating = x.Rating
+        }).ToList();
+        return viewModelsReview;
+    }
+    
+    
+    public async Task <ReviewViewModel> GetReviewByIdAsync(long id)
+    {
+        var review = await _reviewReadRepository.GetByIdAsync(id);
+        var viewModelsReview =  new ReviewViewModel
+        {
+            UserId = review.UserId,
+            OrderId = review.OrderId,
+            ReviewText = review.ReviewText,
+            ReviewDate = review.ReviewDate,
+            Rating = review.Rating
+        };
+        return viewModelsReview;
+    }
+    
+    
 }
