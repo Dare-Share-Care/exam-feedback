@@ -16,11 +16,11 @@ public class ReviewController : ControllerBase
         _reviewService = reviewService;
     }
     
-    [HttpPost("create-review")]
+    [HttpPost("submit-review")]
     public async Task<IActionResult> CreateReview([FromBody] ReviewDto dto)
     {
-        var review = await _reviewService.CreateReviewAsync(dto);
-        return Ok(review);
+        await _reviewService.SubmitReviewAsync(dto);
+        return Ok();
     }
     
     [HttpGet("get-orders")]

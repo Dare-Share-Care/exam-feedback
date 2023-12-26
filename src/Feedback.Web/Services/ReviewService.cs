@@ -2,6 +2,7 @@
 using Feedback.Web.Interfaces.DomainServices;
 using Feedback.Web.Models.Dto;
 using Feedback.Web.Models.ViewModels;
+using Feedback.Web.Specifications;
 using Restaurant.Infrastructure.Interfaces;
 
 namespace Feedback.Web.Services;
@@ -11,8 +12,9 @@ public class ReviewService : IReviewService
     private readonly IReadRepository<ReviewEntity> _reviewReadRepository;
     private readonly IRepository<ReviewEntity> _reviewRepository;
     private readonly IOrderService _orderService;
-    
-    public ReviewService(IReadRepository<ReviewEntity> reviewReadRepository, IRepository<ReviewEntity> reviewRepository, IOrderService orderService)
+
+    public ReviewService(IReadRepository<ReviewEntity> reviewReadRepository, IRepository<ReviewEntity> reviewRepository,
+        IOrderService orderService)
     {
         _reviewReadRepository = reviewReadRepository;
         _reviewRepository = reviewRepository;
@@ -24,43 +26,36 @@ public class ReviewService : IReviewService
     {
         var orders = await _orderService.GetCompletedOrdersAsync(1);
         return orders;
-
     }
-    
-    public async Task<ReviewViewModel> CreateReviewAsync(ReviewDto dto)
+
+
+    public async Task SubmitReviewAsync(ReviewDto dto)
     {
-        try
-        {
-            var createdReview = await _reviewRepository.AddAsync(new ReviewEntity
-            {
-                UserId = dto.UserId,
-                RestaurantId = dto.RestaurantId,
-                CourierId = dto.CourierId,
-                OrderId = dto.OrderId,
-                ReviewText = dto.ReviewText,
-                ReviewDate = dto.ReviewDate,
-                Rating = dto.Rating
-            });
+        //Get a list of completed orders for the user
+        var ordersToReview = await _orderService.GetCompletedOrdersAsync(dto.UserId);
 
-            var reviewDto = new ReviewViewModel()
-            {
-                UserId = createdReview.UserId,
-                RestaurantId = createdReview.RestaurantId,
-                CourierId = createdReview.CourierId,
-                OrderId = createdReview.OrderId,
-                ReviewText = createdReview.ReviewText,
-                ReviewDate = createdReview.ReviewDate,
-                Rating = createdReview.Rating
-            };
-
-            return reviewDto;
-        }
-        catch (Exception ex)
+        //Check if the order exists
+        if (ordersToReview == null)
         {
-            //TODO Handle the exception, log it, and consider returning an error response or rethrowing.
-            //TODO Example: log.LogError(ex, "Error creating review.");
-            throw;
+            throw new Exception("Order not found");
         }
+
+
+        //Validate order id exists in ordersToReview
+        var orderExists = ordersToReview.Any(x => x.OrderId == dto.OrderId);
+        if (!orderExists) throw new Exception("Chosen order did not exist in the list of orders to review");
+        // Create a review entity
+        var reviewToSubmit = new ReviewEntity()
+        {
+            UserId = dto.UserId,
+            OrderId = dto.OrderId,
+            ReviewText = dto.ReviewText,
+            ReviewDate = dto.ReviewDate,
+            Rating = dto.Rating
+        };
+
+        // Save the review to the database
+        await _reviewRepository.AddAsync(reviewToSubmit);
+        await _reviewRepository.SaveChangesAsync();
     }
-
 }

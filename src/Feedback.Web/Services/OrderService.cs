@@ -30,7 +30,7 @@ public class OrderService : IOrderService
             var orderViewModels = new List<OrderViewModel>();
             foreach (var order in orders)
             {
-                // Map the gRPC response to your CatalogueViewModel
+                // Map the gRPC response to your ViewModel
                 var orderViewModel = new OrderViewModel()
                 {
                     UserId = order.UserId,
@@ -60,4 +60,7 @@ public class OrderService : IOrderService
             throw new Exception($"gRPC Error: {ex.Status.Detail}", ex);
         }
     }
+
+
+    
 }

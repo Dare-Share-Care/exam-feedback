@@ -5,7 +5,7 @@ namespace Feedback.Web.Interfaces.DomainServices;
 
 public interface IReviewService
 {
-    Task<ReviewViewModel> CreateReviewAsync(ReviewDto dto);
+    Task SubmitReviewAsync(ReviewDto dto);
     
     Task<List<OrderViewModel>> GetOrders();
 

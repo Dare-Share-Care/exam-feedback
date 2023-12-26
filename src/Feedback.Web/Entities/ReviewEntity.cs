@@ -5,8 +5,6 @@ namespace Feedback.Web.Entities;
 public class ReviewEntity : BaseEntity
 {
     public long UserId { get; set; }
-    public long RestaurantId { get; set; }
-    public long CourierId { get; set; }
     public long OrderId { get; set; }
     public string ReviewText { get; set; }
 
