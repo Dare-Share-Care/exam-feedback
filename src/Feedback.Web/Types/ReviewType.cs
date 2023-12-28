@@ -1,5 +1,4 @@
 ﻿using Feedback.Web.Entities;
-using Feedback.Web.Models.ViewModels;
 
 namespace Feedback.Web.Types;
 

@@ -36,8 +36,6 @@ builder.Services.AddDbContext<ReviewContext>(options =>
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
  
-
-
 //Build repositories
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -46,7 +44,10 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 //graphql
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<QueryType>();
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+    .AddQueryType<QueryType>()
+    .AddMutationType<MutationType>();
+
           
 var app = builder.Build();
 app.UseStaticFiles();

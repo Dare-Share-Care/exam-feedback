@@ -51,7 +51,7 @@ public class ReviewService : IReviewService
             UserId = dto.UserId,
             OrderId = dto.OrderId,
             ReviewText = dto.ReviewText,
-            ReviewDate = dto.ReviewDate,
+            ReviewDate = DateTime.UtcNow,
             Rating = dto.Rating
         };
 
