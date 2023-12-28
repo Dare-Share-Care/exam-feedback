@@ -1,6 +1,7 @@
 using Feedback.Web.Data;
 using Feedback.Web.Interfaces.DomainServices;
 using Feedback.Web.Services;
+using Feedback.Web.Types;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Infrastructure.Data;
 using Restaurant.Infrastructure.Interfaces;
@@ -42,7 +43,10 @@ builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 // JWT Configuration
 
-
+//graphql
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<QueryType>();
           
 var app = builder.Build();
 app.UseStaticFiles();
@@ -67,6 +71,10 @@ app.Use(async (context, next) =>
         await next();
     }
 });
+
+app.MapGraphQL("/graphql");
+
+
 app.Run();
 
 public partial class Program { }
